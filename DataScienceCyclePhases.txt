@@ -1,0 +1,58 @@
+hi, i want to create a machine learning general template to use as a skeleton to quickly build powerful data science projects including ALL phases of the data science cycle. I want you to list in order each phase of the data science cycle in numbered bullet points, and describe each phase, mentioning what should be included in it and also mentioning what are the inputs of the phase as well as the outputs of the phase such that the outputs of the previous phase is usually the input of the next phase. for example, lets consider the phase of 'Model Selection and Training':
+#################
+***********
+PHASE 5: Feature Engineering:
+Description:
+    Is a phase where features are engineered, created, selected, eliminated, pre-processed. It is a phase that is extremely valuable when it comes to adding value specially when the data scientist has specific domain knowledge in the field related to the use case or problem to be solved. There is wide range of techniques that can be used depending on the specific use case, meaning that this phase is not a one-size-fits-all approach, despite it has common practices such as preprocessing the data before the next phase, which is modeling.
+Inputs:
+     * categorical_features : These can be furtherly subdivided into nominal and ordinal. Depends on your use case.
+     * numerical_features : These can be furtherly subdivided depending on the type of transformation to apply.
+     * X_train : Uses the fit_transform() method over the preprocessing pipeline on the X_train and y_train datasets.
+     * X_valid : Uses the transform() method over the preprocessing pipeline on the X_valid dataset.
+     * X_test : Uses the transform() method over the preprocessing pipeline on the X_test dataset.
+     * y_train : Uses the fit_transform() method over the preprocessing pipeline on the X_train and y_train datasets.
+     * Great understanding about the features themselves, and the domain in order to come up with new features.
+     * etc.
+Outputs:
+     * X_train_transformed : Generated with the fit_transform() method over the preprocessing pipeline on the X_train and y_train datasets.
+     * X_valid_transformed : Generated the transform() method over the preprocessing pipeline on the X_valid dataset.
+     * X_test_transformed : Generated the transform() method over the preprocessing pipeline on the X_test dataset.
+     * preprocessing_pipeline : Is the pipeline where all data is preprocessed and is the previous step before being fed to a model before training
+***********
+PHASE 6 - Model Selection and Training:
+Description:
+    This phase selects the model or models using the preprocessed data, which is the output of the preprocessing pipeline and is not integrated with the model in the same pipeline at least for hyperparameter tuning purposes since it causes a mismatch, and trains the training dataset while in parallel evaluating it with the validation set in order to avoid overfitting while performing Hyperparameter Tuning to determine optimal parameters from the parameter grid
+Inputs:
+     * X_train_transformed : Is used to train the model during Hyperparameter Tuning
+     * X_valid_transformed : Is used to evaluate the model and avoid overfitting during training while on Hyperparameter Tuning.
+     * models : Is a dictionary of multiple models where each model also contains a parameter grid to be used for Hyperparameter Tuning.
+     * X_train : Is used to concatenate the datasets X_train with X_valid and use that to train the final model with best parameters.
+     * X_valid : Is used to concatenate the datasets X_train with X_valid and use that to train the final model with best parameters.
+     * preprocessor : Is used within a new pipeline as the previous step to the best model with best parameters and is fed with the new joined X_train + y_train dataset which is a pandas dataframe just like X_train and y_train.
+     * 
+Outputs:
+     * grid_model_best : Is the best model that was retrained with best parameters and cross-validation while feeding the concatenated training and validation sets.
+***********
+PHASE 7 - Model Evaluation:
+Description:
+    This phase uses the final trained model generated from the previous phase and predicts the values given a testing set. It also generates a model performance metric which compares the actual values from the testing set with the predicted values generated and this common metric is used to compare different models(each one of these models were trained with best parameters and joined train and validation datasets on the previous phase.)
+Inputs:
+     * grid_model_best : A dictionary holding the best model trained with optimal parameters for each type of model.
+     * X_test : Used for generation predictions with predict() method over grid_model_best .
+     * y_test : Used for comparing it to the predictions generated in order to generate a metric score to evaluate the final performance of the model.
+     * best_params : Dictionary with the best parameters for each best model for each model type tested.
+     * features : List of original features from the X dataset.
+     * target : Target (y) specified from the original dataset
+Outputs:
+     * grid_model_best.pkl : Pickle file where objects can be serialized and dumped using joblib , which packs grid_model_best , best_params , features , target . This file can then be loaded on the next phase of Deployment or anywhere else and then you can load the pickle file, deserialiaze and unpack the objects and be able to use them in order to use your Machine Learning models for predictions, extracting insights, or other similar uses, wherever you desire given the right environment and dependencies are installed properly.
+***********
+     PHASE 8 - Deployment & Monitoring:
+Description:
+    This phase ...
+Inputs:
+     * grid_model_best.pkl : Pickle file where objects such as machine learning models and other Python objects can be deserialiazed and unpacked in order to perform predictions, extracting insights or similar uses and will be the main component in the deployment in order to generate value wherever you intend to deploy the model.
+     * Ideally the pickle file holding the machine learning model will have a UI where it can be used, such as a web app or similar.
+     * User input either within the UI or some other way will be what feeds the machine learning model such that it can return a response that adds value to the user.
+Outputs:
+     * The response obtained when the user feeds the model with input and receives a response that adds value.
+#################
